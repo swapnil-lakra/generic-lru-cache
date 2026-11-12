@@ -59,7 +59,7 @@ Then add the dependency:
 
 ```xml
 <dependency>
-    <groupId>com.swapnillakra</groupId>
+    <groupId>com.swapnil</groupId>
     <artifactId>generic-lru-cache</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -67,15 +67,15 @@ Then add the dependency:
 
 ### Option 2 — Copy source
 
-Since it's dependency-free, you can copy the `com.swapnillakra.cache` package directly into your project.
+Since it's dependency-free, you can copy the `com.swapnil.cache` package directly into your project.
 
 ---
 
 ## Quick Start
 
 ```java
-import com.swapnillakra.cache.Cache;
-import com.swapnillakra.cache.CacheBuilder;
+import com.swapnil.cache.Cache;
+import com.swapnil.cache.CacheBuilder;
 
 Cache<String, User> cache = CacheBuilder.<String, User>newBuilder()
     .capacity(500)
