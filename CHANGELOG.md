@@ -22,4 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CacheStats` immutable snapshot with hit/miss/load/eviction counters
 - Unit tests for `CacheStats` derivations and edge cases
 
+- `Cache<K, V>` public interface extending `AutoCloseable` with
+  `get`, `get(key, loader)`, `put`, `remove`, `containsKey`, `size`, `isEmpty`, `clear`, `stats`, and `close`
+- `EvictionPolicy<K>` public interface with pluggable eviction hooks:
+  `onAccess`, `onInsert`, `onRemove`, `selectVictim`
+
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
