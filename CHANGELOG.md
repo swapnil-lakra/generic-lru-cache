@@ -27,4 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `EvictionPolicy<K>` public interface with pluggable eviction hooks:
   `onAccess`, `onInsert`, `onRemove`, `selectVictim`
 
+- `LRUEvictionPolicy<K>` — O(1) LRU policy backed by a doubly linked
+  list with sentinel head/tail plus `HashMap<K, Node<K>>` for O(1) lookup
+- Unit tests covering order invariants, head/middle/tail removal,
+  access promotion, contract violations, peek-only semantics, and a
+  full eviction cycle simulation
+
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
