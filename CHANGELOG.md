@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EditorConfig for cross-IDE consistency
 - JaCoCo coverage plugin configuration
 
+  <br>
+
 - `EvictionReason` enum (SIZE_EXCEEDED, EXPIRED, EXPLICIT, REPLACED)
 - `CacheLoader<K, V>` functional interface for cache-aside loading
 - `EvictionListener<K, V>` functional interface for eviction callbacks
@@ -22,15 +24,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CacheStats` immutable snapshot with hit/miss/load/eviction counters
 - Unit tests for `CacheStats` derivations and edge cases
 
+  <br>
+
 - `Cache<K, V>` public interface extending `AutoCloseable` with
   `get`, `get(key, loader)`, `put`, `remove`, `containsKey`, `size`, `isEmpty`, `clear`, `stats`, and `close`
 - `EvictionPolicy<K>` public interface with pluggable eviction hooks:
   `onAccess`, `onInsert`, `onRemove`, `selectVictim`
+
+  <br>
 
 - `LRUEvictionPolicy<K>` — O(1) LRU policy backed by a doubly linked
   list with sentinel head/tail plus `HashMap<K, Node<K>>` for O(1) lookup
 - Unit tests covering order invariants, head/middle/tail removal,
   access promotion, contract violations, peek-only semantics, and a
   full eviction cycle simulation
+
+  <br>
+  
+- `ExpiryEntry<V>` internal wrapper for value + expiration timestamp
+- `AbstractCache<K, V>` template implementing the full `Cache` contract:
+  capacity enforcement, lazy TTL expiry, cache-aside loading, eviction
+  listener notifications, and lock-free `stats()`
+- `LRUCache<K, V>` concrete cache — policy-agnostic, driven by an
+  externally supplied `EvictionPolicy<K>`
+- Comprehensive `LRUCacheTest` covering CRUD, eviction ordering, TTL,
+  cache-aside loading, statistics, edge cases, and thread-safety smoke test
 
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
