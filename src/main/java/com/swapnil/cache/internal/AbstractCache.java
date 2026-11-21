@@ -1,6 +1,8 @@
 package com.swapnil.cache.internal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
@@ -345,5 +347,59 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>{
         }
         long candidate = now + ttlMillis;
         return candidate < now ? Long.MAX_VALUE : candidate;
+    }
+
+     /**
+     * Removes all currently expired entries from the cache.
+     *
+     * <p>Invoked by {@link CleanupTask} on the scheduled executor, and may
+     * also be called directly by subclasses that want to trigger a sweep
+     * on demand (e.g. after a config reload).</p>
+     *
+     * <p><b>Safe to call after close:</b> returns {@code 0} without touching
+     * state. This lets an in-flight scheduled sweep race safely against
+     * {@link #close()}.</p>
+     *
+     * @return the number of entries removed; {@code 0} if none were expired
+     *         or the cache is already closed
+     */
+    protected int sweepExpired(){
+        lock.lock();
+        try {
+            if(closed){
+                return 0;
+            }
+            long now = System.currentTimeMillis();
+
+            // Snapshot expired keys first — mutating a HashMap while
+            // iterating its entry set is not safe even under a lock.
+            List<K> expiredKeys = null;
+            for(Map.Entry<K, ExpiryEntry<V>> e : store.entrySet()){
+                if(e.getValue().isExpired(now)){
+                    if(expiredKeys == null){
+                        expiredKeys = new ArrayList<>();
+                    }
+                    expiredKeys.add(e.getKey());
+                }
+            }
+
+            if(expiredKeys == null){
+                return 0;
+            }
+
+            for(K key : expiredKeys){
+                ExpiryEntry<V> entry = store.remove(key);
+                if(entry != null){
+                    policy.onRemove(key);
+                    fireListener(key, entry.value, 
+                        EvictionReason.EXPIRED
+                    );
+                    evictionCount.incrementAndGet();
+                }
+            }
+            return expiredKeys.size();
+        } finally {
+            lock.unlock();
+        }
     }
 }

@@ -50,4 +50,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive `LRUCacheTest` covering CRUD, eviction ordering, TTL,
   cache-aside loading, statistics, edge cases, and thread-safety smoke test
 
+  <br>
+
+- Background TTL cleanup via `ScheduledExecutorService` (daemon thread),
+  opt-in through the `LRUCache` constructor
+- `CleanupTask` — Runnable wrapper that invokes `sweepExpired()`, logs and
+  swallows exceptions so a failed sweep cannot kill the scheduler
+- `AbstractCache#sweepExpired()` — protected method that removes all
+  currently expired entries, returns removed count, safe to call after close
+- Tests for direct sweep, automatic sweep, listener firing, eviction
+  counting, lifecycle, and concurrent close-vs-sweep safety
+
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
