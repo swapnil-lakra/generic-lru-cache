@@ -61,4 +61,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests for direct sweep, automatic sweep, listener firing, eviction
   counting, lifecycle, and concurrent close-vs-sweep safety
 
+  <br>
+
+- `CacheBuilder<K, V>` fluent builder — public entry point for constructing
+  caches, with defaults for capacity (100), TTL (0 = no expiry), eviction
+  policy (LRU), listener (none), and background cleanup (off)
+- Setter-level validation for `capacity`, `defaultTtlMillis`, and
+  `cleanupIntervalMillis` so misconfiguration fails fast
+- `CacheBuilderTest` — defaults, custom config flow-through, setter
+  validation, fluent chaining, builder reuse, generic inference
+
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
