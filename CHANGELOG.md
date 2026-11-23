@@ -71,4 +71,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CacheBuilderTest` — defaults, custom config flow-through, setter
   validation, fluent chaining, builder reuse, generic inference
 
+  <br>
+
+- `CacheLoadExceptionTest` — constructor, `getKey()`, cause propagation
+- `CacheIntegrationTest` — end-to-end via public API only (builder →
+  cache → loader → listener → stats → close), including custom FIFO
+  policy, TTL + background cleanup, and try-with-resources
+- `ConcurrencyStressTest` — mixed read/write/remove under 16 threads,
+  capacity invariant under contention, close-during-active-use safety,
+  concurrent cache-aside loading
+- JaCoCo coverage gate: LINE ≥ 85%, BRANCH ≥ 70% (bound to `verify`,
+  not `test`, so normal `mvn test` remains fast)
+  
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
