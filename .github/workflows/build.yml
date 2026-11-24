@@ -1,0 +1,56 @@
+name: Build
+
+on: 
+  push: 
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+# Cancel any in-flight runs for the same branch/PR when a new commit lands.
+# Saves CI minutes and gives faster feedback.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build: 
+    name: Build (JDK ${{ matrix.java }})
+    runs-on: ubuntu-latest
+  
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['11', '17', '21']
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with: 
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: Build and verify
+        run: mvn -B clean verify
+
+      # Upload the coverage report once (JDK 17 = LTS middle ground).
+      # Coverage is JDK-independent, so no need to upload from all matrix legs.
+      - name: Upload JaCoCo report
+        if: matrix.java == '17' && always()
+        uses: actions/upload-artifact@v4
+        with: 
+          name: jacoco-report
+          path: target/site/jacoco/
+          retention-days: 14
+        
+        # Only on failure — debugging aid for red builds.
+      - name: Upload surefire reports (on failure)
+        if: failure()
+        uses: actions/upload
+        with:
+          name: surefire-reports-jdk${{ matrix.java }}
+          path: target/surefire-reports/
+          retention-days: 7

@@ -4,6 +4,7 @@
 > support, pluggable eviction policies, cache-aside loading, and built-in
 > statistics. **Zero external dependencies.**
 
+[![Build](https://github.com/swapnil-lakra/generic-lru-cache/actions/workflows/build.yml/badge.svg)](https://github.com/swapnil-lakra/generic-lru-cache/actions/workflows/build.yml)
 [![Java](https://img.shields.io/badge/Java-11%2B-blue.svg)](https://openjdk.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 

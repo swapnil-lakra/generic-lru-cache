@@ -96,6 +96,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   TTL strategy, eviction reasons, loader semantics, statistics, and
   scope boundaries
 
+  <br>
+
+- GitHub Actions CI workflow (`build.yml`) — matrix build on JDK 11, 17,
+  and 21, `mvn verify` with JaCoCo coverage gate, artifact upload of
+  coverage and failure reports
+- Build badge on README
+
 ### Changed
 
 - README and Javadoc polished for public consumption; every code snippet
