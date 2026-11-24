@@ -137,7 +137,6 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>{
         if(loaded != null){
             put(key, loaded);
         }
-
         return loaded;
     }
 
