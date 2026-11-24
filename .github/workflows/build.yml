@@ -41,15 +41,14 @@ jobs:
       - name: Upload JaCoCo report
         if: matrix.java == '17' && always()
         uses: actions/upload-artifact@v4
-        with: 
+        with:
           name: jacoco-report
           path: target/site/jacoco/
           retention-days: 14
-        
-        # Only on failure — debugging aid for red builds.
+
       - name: Upload surefire reports (on failure)
-        if: failure()
-        uses: actions/upload
+        if: failure() 
+        uses: actions/upload-artifact@v4 
         with:
           name: surefire-reports-jdk${{ matrix.java }}
           path: target/surefire-reports/
