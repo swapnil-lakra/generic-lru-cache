@@ -82,5 +82,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   concurrent cache-aside loading
 - JaCoCo coverage gate: LINE ≥ 85%, BRANCH ≥ 70% (bound to `verify`,
   not `test`, so normal `mvn test` remains fast)
+
+  <br>
+
+- `package-info.java` for the public API, policy extension point, and
+  internal package (with "not for external use" warning)
+- Runnable `UsageExamples` demo covering 8 scenarios: basic CRUD, LRU,
+  TTL, cache-aside loading, eviction listener, custom FIFO policy,
+  statistics, and try-with-resources
+- `README.md` rewrite — installation from source, working Quick Start,
+  7 runnable usage examples, full API reference, project structure
+- `docs/ARCHITECTURE.md` — design rationale for threading, LRU algorithm,
+  TTL strategy, eviction reasons, loader semantics, statistics, and
+  scope boundaries
+
+### Changed
+
+- README and Javadoc polished for public consumption; every code snippet
+  in README compiles and runs against the current API
   
 [Unreleased]: https://github.com/swapnil-lakra/generic-lru-cache/commits/develop
